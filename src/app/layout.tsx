@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   description: "一个以安全为核心的反职场霸凌 AI 支持与受控对抗练习原型。",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#18483d",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

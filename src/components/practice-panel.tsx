@@ -67,8 +67,16 @@ export function PracticePanel({
 }: PracticePanelProps) {
   return (
     <div className="practice-layout">
-      <aside className="control-panel">
-        <h3>会话前痛苦评级</h3>
+      <div className="control-panel-wrapper">
+        <details className="control-panel-details">
+          <summary className="control-panel-summary">
+            <span>练习设置</span>
+            <em>
+              痛苦 {distressLevel}/5 · {viewMode === "shield" ? "盾牌" : "练习"}
+            </em>
+          </summary>
+          <aside className="control-panel">
+            <h3 className="desktop-only">会话前痛苦评级</h3>
         {assessmentBanner.show ? (
           <SafetyBanner
             actionLabel="采纳建议"
@@ -146,12 +154,14 @@ export function PracticePanel({
             回到盾牌
           </button>
         ) : null}
-        <button className="stop-button" disabled={isSending} onClick={onStop} type="button">
+        <button className="stop-button desktop-stop" disabled={isSending} onClick={onStop} type="button">
           <PauseCircle size={20} />
           STOP · 立刻回到盾牌
         </button>
-        <SessionSummary current={currentSession} recent={recentSessions} />
-      </aside>
+            <SessionSummary current={currentSession} recent={recentSessions} />
+          </aside>
+        </details>
+      </div>
       <div className="simulation-panel">{children}</div>
     </div>
   );

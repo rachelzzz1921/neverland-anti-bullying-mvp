@@ -30,6 +30,202 @@ body {
     var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+}
+
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
+.site-nav-links.desktop-only {
+  display: flex;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 92%, white);
+  backdrop-filter: blur(14px);
+}
+
+.site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  min-height: 56px;
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.site-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.site-nav-links a,
+.site-nav-drawer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-nav-links a:hover,
+.site-nav-drawer a:hover {
+  background: rgba(24, 72, 61, 0.08);
+  color: var(--primary);
+}
+
+.site-nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 250, 240, 0.85);
+  color: var(--foreground);
+}
+
+.site-nav-drawer {
+  display: grid;
+  gap: 4px;
+  padding: 8px 16px 16px;
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 96%, white);
+}
+
+.site-nav-drawer a {
+  width: 100%;
+  border-radius: 14px;
+}
+
+.mobile-practice-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 45;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0));
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 94%, white);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 -12px 32px rgba(55, 42, 21, 0.1);
+}
+
+.dock-action {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.9);
+  color: var(--foreground);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.dock-action.primary {
+  border-color: var(--primary);
+  background: rgba(24, 72, 61, 0.12);
+  color: var(--primary);
+}
+
+.dock-action.stop {
+  flex: 0 0 auto;
+  min-width: 88px;
+  border: 0;
+  background: var(--danger);
+  color: white;
+}
+
+.dock-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.control-panel-details {
+  border: 0;
+}
+
+.control-panel-summary {
+  display: none;
+  list-style: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.9);
+  font-weight: 800;
+}
+
+.control-panel-summary::-webkit-details-marker {
+  display: none;
+}
+
+.control-panel-summary em {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.risk-monitor-details {
+  margin-bottom: 14px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  background: rgba(240, 230, 212, 0.35);
+}
+
+.risk-monitor-details summary {
+  padding: 10px 12px;
+  font-size: 0.82rem;
+}
+
+.risk-monitor-details .risk-monitor-json {
+  margin: 0;
+  border: 0;
+  border-radius: 0 0 14px 14px;
+  background: transparent;
 }
 
 button,
@@ -441,6 +637,11 @@ pre {
   display: grid;
   grid-template-columns: 360px minmax(0, 1fr);
   gap: 20px;
+  align-items: start;
+}
+
+.control-panel-wrapper {
+  min-width: 0;
 }
 
 .control-panel,
@@ -1385,6 +1586,349 @@ pre {
   margin: 6px 0 10px;
 }
 
+/* ——— Desktop (≥1024px) ——— */
+@media (min-width: 681px) {
+  .control-panel-summary {
+    display: none;
+  }
+
+  .control-panel-details .control-panel {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .practice-layout {
+    grid-template-columns: 380px minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .control-panel {
+    position: sticky;
+    top: 72px;
+    max-height: calc(100vh - 88px);
+    overflow: auto;
+  }
+
+  .simulation-panel {
+    min-height: 640px;
+  }
+
+  .chat-shell {
+    min-height: 480px;
+  }
+
+  .message-list {
+    max-height: 460px;
+  }
+
+  .mapping-card {
+    position: sticky;
+    top: 72px;
+  }
+
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.15fr) 440px;
+  }
+
+  .safety-card {
+    min-height: 380px;
+  }
+
+  .hero-actions .primary-action,
+  .hero-actions .secondary-action {
+    min-width: 180px;
+  }
+}
+
+/* ——— Tablet (681px–1023px) ——— */
+@media (max-width: 1023px) {
+  .hero-grid,
+  .practice-layout,
+  .assessment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-grid,
+  .skill-page-grid,
+  .timeline,
+  .bullying-grid,
+  .agent-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mapping-card,
+  .score-summary {
+    position: static;
+  }
+
+  .control-panel {
+    position: static;
+    max-height: none;
+  }
+
+  .persona-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ——— Mobile (≤680px) ——— */
+@media (max-width: 680px) {
+  .mobile-only.site-nav-toggle {
+    display: inline-flex;
+  }
+
+  .mobile-only.site-nav-drawer {
+    display: grid;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .hero,
+  .section {
+    width: min(100% - 20px, 1180px);
+  }
+
+  .site-nav-inner {
+    width: min(100% - 20px, 1180px);
+  }
+
+  .hero {
+    padding: 28px 0 32px;
+  }
+
+  .section {
+    padding: 36px 0;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 12vw, 3.4rem);
+    letter-spacing: -0.05em;
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 8vw, 2.4rem);
+  }
+
+  .hero-copy,
+  .section-heading p {
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .primary-action,
+  .hero-actions .secondary-action {
+    width: 100%;
+  }
+
+  .safety-card {
+    min-height: auto;
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .signal {
+    margin: 16px 0 10px;
+    font-size: clamp(1.6rem, 10vw, 2.6rem);
+  }
+
+  .skill-grid,
+  .skill-page-grid,
+  .timeline,
+  .agent-grid,
+  .persona-grid,
+  .bullying-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .practice-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .simulation-panel {
+    order: 1;
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .control-panel-wrapper {
+    order: 2;
+  }
+
+  .control-panel-summary {
+    display: flex;
+  }
+
+  .control-panel-details:not([open]) .control-panel {
+    display: none;
+  }
+
+  .control-panel {
+    margin-top: 8px;
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .option {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-height: 48px;
+  }
+
+  .status-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .orchestration-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .phase-steps {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .phase-step {
+    flex: 0 0 92px;
+    scroll-snap-align: start;
+  }
+
+  .practice-jump-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .jump-debrief-button {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .chat-shell {
+    min-height: 360px;
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .message-list {
+    max-height: 52vh;
+  }
+
+  .message {
+    max-width: 100%;
+    padding: 14px;
+  }
+
+  .reply-form button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .chat-shell .phase-action-buttons {
+    flex-direction: column;
+  }
+
+  .chat-shell .phase-action-buttons .primary-action,
+  .chat-shell .phase-action-buttons .secondary-action {
+    width: 100%;
+  }
+
+  .question {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .score-buttons {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .score {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 44px;
+    height: 44px;
+  }
+
+  .skill-pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .skill-page-buttons {
+    justify-content: center;
+  }
+
+  .desktop-stop {
+    display: none;
+  }
+
+  .mobile-practice-dock {
+    display: flex;
+  }
+
+  .app-shell.has-practice-dock {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0));
+  }
+
+  .modal-backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .post-practice-modal {
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 24px 24px 0 0;
+    padding: 20px 18px calc(18px + env(safe-area-inset-bottom, 0));
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .primary-action,
+  .modal-actions .secondary-action {
+    width: 100%;
+  }
+
+  .session-dl div {
+    grid-template-columns: 64px 1fr;
+  }
+
+  .crisis-exit-panel {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .safety-banner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .safety-banner .secondary-action.compact {
+    width: 100%;
+  }
+}
+
 @media (max-width: 980px) {
   .hero-grid,
   .practice-layout,
@@ -1405,30 +1949,9 @@ pre {
   }
 }
 
-@media (max-width: 680px) {
-  .hero,
-  .section {
-    width: min(100% - 20px, 1180px);
-  }
-
-  .hero {
-    padding-top: 32px;
-  }
-
-  .skill-grid,
-  .skill-page-grid,
-  .timeline,
-  .agent-grid,
-  .persona-grid,
-  .bullying-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .question {
-    grid-template-columns: 1fr;
-  }
-
-  .message {
-    max-width: 100%;
+/* Legacy mobile block merged above — keep minimal fallback */
+@media (max-width: 680px) and (max-height: 500px) {
+  .message-list {
+    max-height: 38vh;
   }
 }

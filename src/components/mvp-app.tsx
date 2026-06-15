@@ -14,10 +14,12 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { CrisisExitPanel } from "@/components/crisis-exit-panel";
+import { MobilePracticeDock } from "@/components/mobile-practice-dock";
 import { PostPracticeModal } from "@/components/post-practice-modal";
 import { PracticePanel } from "@/components/practice-panel";
 import { SafetyBanner } from "@/components/safety-banner";
 import { ShieldChat } from "@/components/shield-chat";
+import { SiteNav } from "@/components/site-nav";
 import { SkillManager } from "@/components/skill-manager";
 import { suggestDistressFromQuestionnaire } from "@/lib/assessment";
 import {
@@ -728,8 +730,25 @@ export function MvpApp() {
     if (assessmentSuggestion.lockPractice) setConsented(false);
   }
 
+  const showMobileDock = viewMode === "practice" || practicePhase === "stopped";
+
   return (
-    <main>
+    <main className={`app-shell${showMobileDock ? " has-practice-dock" : ""}`} id="top">
+      <SiteNav />
+      <MobilePracticeDock
+        canJumpToDebrief={canJumpToDebrief}
+        canNextRound={canNextRound}
+        canStartPractice={canStartPractice}
+        isSending={isSending}
+        onDebrief={() => void runDebrief()}
+        onNextRound={() => void continueNextRound()}
+        onReturnShield={() => void returnToShieldAfterPractice()}
+        onStartPractice={() => void startPractice()}
+        onStop={() => void handleStop()}
+        practicePhase={practicePhase}
+        viewMode={viewMode}
+        visible={showMobileDock}
+      />
       <PostPracticeModal
         distressBefore={currentSession?.distress_before ?? distressLevel}
         onSkip={() => {
@@ -866,17 +885,20 @@ export function MvpApp() {
               <span>风险管理：{runtimeRisk.signal}</span>
               <span>请求强度：{effectiveApiIntensity()}</span>
             </div>
-            <code className="risk-monitor-json">
-              {JSON.stringify({
-                risk_level: runtimeRisk.level,
-                signal: runtimeRisk.signal,
-                reason: runtimeRisk.copy,
-                source: runtimeRisk.source,
-                agent: "risk",
-                status: "monitoring",
-                intensity_reduced: intensityDowngraded,
-              })}
-            </code>
+            <details className="risk-monitor-details">
+              <summary>风险管理 JSON</summary>
+              <code className="risk-monitor-json">
+                {JSON.stringify({
+                  risk_level: runtimeRisk.level,
+                  signal: runtimeRisk.signal,
+                  reason: runtimeRisk.copy,
+                  source: runtimeRisk.source,
+                  agent: "risk",
+                  status: "monitoring",
+                  intensity_reduced: intensityDowngraded,
+                })}
+              </code>
+            </details>
             {viewMode === "practice" ? (
               <div className="phase-steps">
                 {phaseSteps.map((step, index) => (
